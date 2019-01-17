@@ -11,13 +11,12 @@ case object DropOldest extends SessionOverflowStrategy
 case object DropNewest extends SessionOverflowStrategy
 case object FailStage  extends SessionOverflowStrategy
 
-
 final case class SessionOverflowException(msg: String) extends RuntimeException(msg)
 
 final class SessionWindow[T](val inactivity: FiniteDuration,
                              val maxSize: Int,
                              val overflowStrategy: SessionOverflowStrategy)
-  extends GraphStage[FlowShape[T, T]] {
+    extends GraphStage[FlowShape[T, T]] {
 
   require(maxSize > 1, "maxSize must be greater than 1")
   require(inactivity > Duration.Zero)
@@ -30,7 +29,7 @@ final class SessionWindow[T](val inactivity: FiniteDuration,
   override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =
     new TimerGraphStageLogic(shape) with InHandler with OutHandler {
 
-      private var queue: Queue[T] = Queue.empty[T]
+      private var queue: Queue[T]    = Queue.empty[T]
       private var nextDeadline: Long = System.nanoTime + inactivity.toNanos
 
       setHandlers(in, out, this)
@@ -43,15 +42,16 @@ final class SessionWindow[T](val inactivity: FiniteDuration,
         val element: T = grab(in)
         queue =
           if (queue.size < maxSize) queue.enqueue(element)
-          else overflowStrategy match {
-            case DropOldest =>
-              if (queue.isEmpty) queue.enqueue(element)
-              else queue.tail.enqueue(element)
-            case DropNewest => queue
-            case FailStage =>
-              failStage(SessionOverflowException(s"Received messages are more than $maxSize"))
-              Queue.empty[T]
-          }
+          else
+            overflowStrategy match {
+              case DropOldest =>
+                if (queue.isEmpty) queue.enqueue(element)
+                else queue.tail.enqueue(element)
+              case DropNewest => queue
+              case FailStage =>
+                failStage(SessionOverflowException(s"Received messages are more than $maxSize"))
+                Queue.empty[T]
+            }
 
         nextDeadline = System.nanoTime + inactivity.toNanos
 
