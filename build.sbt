@@ -3,7 +3,7 @@ val projectName    = "akka-streams-session-window"
 
 organization := "me.ekahraman"
 
-scalaVersion := "2.12.8"
+crossScalaVersions := Seq("2.12.6", "2.11.12")
 
 
 val akkaVersion      = "2.5.16"
