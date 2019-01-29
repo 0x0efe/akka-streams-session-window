@@ -14,14 +14,14 @@ case object FailStage  extends SessionOverflowStrategy
 final case class SessionOverflowException(msg: String) extends RuntimeException(msg)
 
 final private[akka] class SessionWindow[T](val inactivity: FiniteDuration,
-                             val maxSize: Int,
-                             val overflowStrategy: SessionOverflowStrategy)
+                                           val maxSize: Int,
+                                           val overflowStrategy: SessionOverflowStrategy)
     extends GraphStage[FlowShape[T, T]] {
 
   require(maxSize > 1, "maxSize must be greater than 1")
   require(inactivity > Duration.Zero)
 
-  val in : Inlet[T]  = Inlet[T]("SessionWindow.in")
+  val in: Inlet[T]   = Inlet[T]("SessionWindow.in")
   val out: Outlet[T] = Outlet[T]("SessionWindow.out")
 
   override val shape: FlowShape[T, T] = FlowShape(in, out)
@@ -74,4 +74,3 @@ final private[akka] class SessionWindow[T](val inactivity: FiniteDuration,
         }
     }
 }
-
