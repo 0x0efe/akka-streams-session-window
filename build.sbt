@@ -33,6 +33,7 @@ lazy val core = (project in file("core"))
 
 lazy val root = (project in file("."))
   .settings(
-    name    := projectName
+    name      := projectName,
+    publishTo := sonatypePublishTo.value
   ).aggregate(core)
 
