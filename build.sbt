@@ -8,7 +8,7 @@ val scalaTestVersion = "3.0.5"
 
 
 lazy val commonSettings = Seq(
-  organization := "me.ekahraman",
+  organization := "io.github.efekahraman",
   resolvers ++= Seq(
     "Apache Releases Repository" at "https://repository.apache.org/content/repositories/releases/"
   ),

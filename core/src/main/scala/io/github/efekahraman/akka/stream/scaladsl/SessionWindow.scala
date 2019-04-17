@@ -1,9 +1,11 @@
-package me.ekahraman.akka.stream.scaladsl
+package io.github.efekahraman.akka.stream.scaladsl
+
 import akka.stream.FlowShape
 import akka.stream.stage.GraphStage
-import me.ekahraman.akka.stream.{SessionOverflowStrategy, SessionWindow}
+import io.github.efekahraman.akka.stream._
 
 import scala.concurrent.duration.FiniteDuration
+
 
 object SessionWindow {
   def apply[T](gap: FiniteDuration,

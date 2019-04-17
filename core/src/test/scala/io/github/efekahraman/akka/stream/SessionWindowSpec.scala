@@ -1,10 +1,9 @@
-package me.ekahraman.akka.stream
+package io.github.efekahraman.akka.stream
 
 import akka.actor.ActorSystem
-import akka.stream.{ActorMaterializer, FlowShape}
 import akka.stream.scaladsl.Source
 import akka.stream.stage.GraphStage
-import me.ekahraman.akka.stream.scaladsl.SessionWindow
+import akka.stream.{ActorMaterializer, FlowShape}
 import org.scalatest.WordSpec
 
 import scala.concurrent.duration.{FiniteDuration, _}
@@ -27,35 +26,35 @@ class SessionWindowSpec extends WordSpec {
 
   "SessionWindow" must {
     "accumulate window until a gap occurs" in {
-      val window: GraphStage[FlowShape[Int, Int]] = SessionWindow(1 second, 10, FailStage)
+      val window: GraphStage[FlowShape[Int, Int]] = scaladsl.SessionWindow(1 second, 10, FailStage)
       val result: Try[List[Int]] = run(1 to 10, window, 2 seconds)
       assert(result.isSuccess)
       assert(result.get == (1 to 10).toList)
     }
 
     "emit the current buffer upon completion" in {
-      val window: GraphStage[FlowShape[Int, Int]] = SessionWindow(5 second, 100, FailStage)
+      val window: GraphStage[FlowShape[Int, Int]] = scaladsl.SessionWindow(5 second, 100, FailStage)
       val result: Try[List[Int]] = run(1 to 10, window, 2 seconds)
       assert(result.isSuccess)
       assert(result.get == (1 to 10).toList)
     }
 
     "drop oldest entries when maxSize is reached" in {
-      val window: GraphStage[FlowShape[Int, Int]] = SessionWindow(1 second, 5, DropOldest)
+      val window: GraphStage[FlowShape[Int, Int]] = scaladsl.SessionWindow(1 second, 5, DropOldest)
       val result: Try[List[Int]] = run(1 to 10, window, 2 seconds)
       assert(result.isSuccess)
       assert(result.get == (6 to 10).toList)
     }
 
     "drop newest entries when maxSize is reached" in {
-      val window: GraphStage[FlowShape[Int, Int]] = SessionWindow(1 second, 5, DropNewest)
+      val window: GraphStage[FlowShape[Int, Int]] = scaladsl.SessionWindow(1 second, 5, DropNewest)
       val result: Try[List[Int]] = run(1 to 10, window, 2 seconds)
       assert(result.isSuccess)
       assert(result.get == (1 to 5).toList)
     }
 
     "fail the graph stage when maxSize is reached" in {
-      val window: GraphStage[FlowShape[Int, Int]] = SessionWindow(1 second, 5, FailStage)
+      val window: GraphStage[FlowShape[Int, Int]] = scaladsl.SessionWindow(1 second, 5, FailStage)
       val result: Try[List[Int]] = run(1 to 10, window, 2 seconds)
       assert(result.isFailure)
       assert(result.failed.get.isInstanceOf[SessionOverflowException])

@@ -1,4 +1,4 @@
-package me.ekahraman.akka.stream
+package io.github.efekahraman.akka.stream
 
 import akka.stream._
 import akka.stream.stage._

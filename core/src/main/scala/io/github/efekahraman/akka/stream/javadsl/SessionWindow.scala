@@ -1,9 +1,11 @@
-package me.ekahraman.akka.stream.javadsl
+package io.github.efekahraman.akka.stream.javadsl
+
 import java.util.concurrent.TimeUnit
 
 import akka.stream.FlowShape
 import akka.stream.stage.GraphStage
-import me.ekahraman.akka.stream.{DropNewest, DropOldest, FailStage, SessionOverflowStrategy, SessionWindow}
+
+import io.github.efekahraman.akka.stream._
 
 import scala.concurrent.duration.FiniteDuration
 
