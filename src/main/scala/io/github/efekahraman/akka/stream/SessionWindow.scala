@@ -13,7 +13,7 @@ case object FailStage  extends SessionOverflowStrategy
 
 final case class SessionOverflowException(msg: String) extends RuntimeException(msg)
 
-final private[akka] class SessionWindow[T](val inactivity: FiniteDuration,
+final private[stream] class SessionWindow[T](val inactivity: FiniteDuration,
                                            val maxSize: Int,
                                            val overflowStrategy: SessionOverflowStrategy)
     extends GraphStage[FlowShape[T, T]] {
