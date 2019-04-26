@@ -24,12 +24,12 @@ Cross compiled with Scala `2.12` and `2.11`.
 ## Dependency
 
 ```
-libraryDependencies += "io.github.efekahraman" %% "akka-stream-session-window" % "0.1"
+libraryDependencies += "io.github.efekahraman" %% "akka-stream-session-window" % "0.1.0"
 ```
 
 ## Examples
 
-Below snippets show how to create a session window.   
+Below snippets show how to create a session window.
 
 ### Scala
 
@@ -69,6 +69,3 @@ final Source<ReadResult, NotUsed> windowedSource = amqpSource.via(window);
 # License
 
 Code is available under the Apache 2 license, available at https://opensource.org/licenses/Apache-2.0.
-
-
-
